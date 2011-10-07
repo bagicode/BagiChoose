@@ -11,6 +11,8 @@ requires:
 - mootools-core 1.2 +
 - mootools-more 1.2 +
 
+provides: [Element, Elements, $, $$]
+
 ...
 */
 
