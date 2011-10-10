@@ -136,6 +136,7 @@ var DropChoose = new Class({
         var selector_coords = this.selector.measure(function() {
             return this.getCoordinates(this.getParent());
         });
+		
         this.display = new Element('a', {
             'id': this.selector.id + '_display',
             'class': this.options.baseClass + '_display',
@@ -151,7 +152,7 @@ var DropChoose = new Class({
         .addEvents({
             click: this.showPopUp.bind(this)
         }).inject(this.selector, 'before');
-
+		
         // DISPLAY TEXT
         this.text = new Element('span', {
             'class': this.options.baseClass + '_text',
@@ -184,7 +185,7 @@ var DropChoose = new Class({
         } else {
             this.valueEl = $(this.selector.id);
             this.selectedValues = $(this.selector.id).get('value');
-            this.selector.xvalue = $(this.selector.id).get('value');
+            this.selector.xvalue = $(this.selector.id).get('value');			
         }
 
         this.selectedElements = new Array();
@@ -192,10 +193,18 @@ var DropChoose = new Class({
         this.createPopUp();
         this.selector.store('bagichoose', this);
 
-
-
         this.NavFunc = this.Navigate.bindWithEvent(this);
         setTimeout(this.resizeZeroPx.bind(this), 500);
+		
+		// Override get value
+		this.selector._get = this.selector.get;
+		this.selector.get = function(attr)
+		{
+			if(attr == 'value' && this._get('xvalue') != 'null') { 
+				return this._get('xvalue');
+			}
+			else return this._get(attr);
+		}.bind(this.selector);
     },
     resizeZeroPx: function() {
         try {
@@ -385,6 +394,10 @@ var DropChoose = new Class({
             var opts = $(this.selector.get('optDiv')).clone().setStyles({ 'display': '', 'width': '100%' });
             opts.inject(this.opts);
             this.optsEl = this.opts.getElements(".option");
+			if(!this.options.multiSelection){
+				this.textToDisplay = (this.optsEl.length > 0 && this.optsEl[0].getElement('.disp') ? '.disp' : '.text');
+				this.onOptionClick(null, this.optsEl[0], 0);
+			}
         } else {
             var timeout = 0;
             if(this.selector.options.length>100) timeout = 500;
@@ -429,7 +442,8 @@ var DropChoose = new Class({
             //.addClass(this.options.baseClass + '_options')
                 .setStyles({
                     'display': 'none',
-                    'width': '100%'
+                    'width': '100%',
+					'border-bottom': '1px solid silver'
                 });
             this.selectedsEl = this.selecteds.getElements(".option");
             this.selectedsEl.each(function(el, idx) {
@@ -585,7 +599,7 @@ var DropChoose = new Class({
         if (this.selectedElements.length > 0) {
             this.selectedElements.each(function(el) {
                 str += $(el).getElement(this.textToDisplay).get('text') + ", ";
-                val += $(el).getElement('.value').get('value') + "|";
+                val += ($(el).getElement('.value').get('value') || $(el).getElement('.value').get('val')) + "|";
             } .bind(this));
             str = str.substring(0, str.length - 2);
             val = val.substring(0, val.length - 1);
@@ -594,8 +608,8 @@ var DropChoose = new Class({
         if (this.valueEl.options && this.valueEl.options.length == 0)
             this.valueEl.options[0] = new Option(str, val);
         $(this.valueEl).set('value', val);
-
         this.changed = false;
+		
         if (this.selector.get('xvalue') != val) {
             this.selector.set('xvalue', val);
             this.selector.xvalue = val;

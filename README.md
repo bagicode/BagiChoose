@@ -18,6 +18,13 @@ and add bagichoose or bagichoosemulti at the control you want to mask.
 		<option>Option Two</option>
 	</select>
 
+or you may add create new instance by:
+	window._bagichooses = new BagiChoose({ 
+		classId: '.bagichoosemulti', 
+		baseClass: 'ms', 
+		splitSelected: false, 
+		multiSelection: true 
+	});
 Screenshots
 -----------
 
@@ -25,4 +32,5 @@ Screenshots
 Arbitrary section
 -----------------
 
-contact us code@bagide.com
+if you have a question, 
+please contact us code@bagide.com

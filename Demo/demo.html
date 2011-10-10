@@ -233,21 +233,18 @@
 			</td>
 			<td>
 				<select class="bagichoose" id="ddlSingleSelect">
-					<option>Please Select</option>
-					<option>Option One</option>
-					<option>Option Two</option>
+					<option value="0">Please Select</option>
+					<option value="1">Option One</option>
+					<option value="2">Option Two</option>
 				</select>
 			</td>
 		</tr>
 		<tr>
 			<td>
-				Multi Select
+				Single Select Customized
 			</td>
 			<td>
-				<select class="bagichoosemulti" id="ddlMultiSelect">
-					<option>Please Select</option>
-					<option>Option One</option>
-					<option>Option Two</option>
+				<select class="bagichoose" id="ddlSingleSelect2" optDiv='optDivId1' style="width:200px;">
 				</select>
 			</td>
 		</tr>
@@ -256,19 +253,50 @@
 				Multi Select Costomized
 			</td>
 			<td>
-				<select class="bagichoosemulti" id="ddlMultiSelect" optDiv='optDivId' style="width:200px;">
-					<option>Please Select</option>
-					<option>Option One</option>
-					<option>Option Two</option>
+				<select class="bagichoosemulti" id="ddlMultiSelect" optDiv='optDivId2' style="width:200px;">
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				Multi Select Split
+			</td>
+			<td>
+				<select class="bagichoosemultisplit" id="ddlMultiSelect2" optDiv='optDivId2' style="width:200px;">
 				</select>
 			</td>
 		</tr>
 	</table>
 	<div style="display: none;">
-		<table id="optDivId">                        
+		<table id="optDivId1">                        
 			<tr class="option">
 				<td style="padding-right: 5px;">
-					<input type="checkbox" value='9' class='value' />
+					<span class="value" val="0" style="display:none;"></span>
+					<div class="text">Please Select</div>
+					<div class="desc" style="color:silver; font-size:8px;">-</div>
+				</td>
+			</tr>
+		
+			<tr class="option">
+				<td style="padding-right: 5px;">
+					<span class="value" val="1" style="display:none;"></span>
+					<div class="text">Title for option1</div>
+					<div class="desc" style="color:silver; font-size:8px;">Lorem dolor ipsum siamet</div>
+				</td>
+			</tr>
+		
+			<tr class="option">
+				<td style="padding-right: 5px;">
+					<span class="value" val="2" style="display:none;"></span>
+					<div class="text" >Title for option2</div>
+					<div class="desc" style="color:silver; font-size:8px;">Lorem dolor ipsum siamet</div>
+				</td>
+			</tr>
+		</table>
+		<table id="optDivId2">                        
+			<tr class="option">
+				<td style="padding-right: 5px;">
+					<input type="checkbox" value='1' class='value' />
 					<label class="text">
 						Option One</label>
 				</td>
@@ -276,7 +304,7 @@
 		
 			<tr class="option">
 				<td style="padding-right: 5px;">
-					<input type="checkbox" value='16' class='value' />
+					<input type="checkbox" value='2' class='value' />
 					<label class="text">
 						Option Two</label>
 				</td>
@@ -284,12 +312,30 @@
 		
 			<tr class="option">
 				<td style="padding-right: 5px;">
-					<input type="checkbox" value='14' class='value' />
+					<input type="checkbox" value='3' class='value' />
 					<label class="text">Option Three</label>
 				</td>
 			</tr>
 		</table>
 	</div>
+	<input type="button" onclick="getAllValues(); return false;" value="Get Values">
 	</form>
 </body>
+<script>
+window.addEvent('domready', function(){
+	window._bagichooses2 = new BagiChoose({ 
+		classId: '.bagichoosemultisplit', 
+		baseClass: 'ms', 
+		splitSelected: 'top', 
+		multiSelection: true 
+	});
+})
+function getAllValues(){
+	var ddl1 = "Dropdown 1: " + $('ddlSingleSelect').get('value');
+	var ddl2 = "Dropdown 2: " + $('ddlSingleSelect2').get('value');
+	var ddl3 = "Dropdown 3: " + $('ddlMultiSelect').get('value');
+	var ddl4 = "Dropdown 4: " + $('ddlMultiSelect2').get('value');
+	alert([ddl1, ddl2, ddl3, ddl4].join('\n'));
+}
+</script>
 </html>
